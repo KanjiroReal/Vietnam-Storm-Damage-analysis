@@ -4,7 +4,7 @@
 2,STORM_IRIS_1964,Iris,1964,11,Storm,Tropical cyclone,South Central Coast,1,0,0,0,0,150,960,5100,146,70000,660478.55,1.059.837.602
 3,STORM_JOAN_1964,Joan,1964,11,Storm,Tropical cyclone,South Central Coast,1,0,0,0,0,130,980,2500,146,15000,141531.12,1.059.837.602
 4,STORM_KATE_1964,Kate,1964,11,Storm,Tropical cyclone,Central Highlands,1,0,0,0,0,130,970,0,146,3000,28306.22,1.059.837.602
-5,STORM_PATSY_1970,Patsy,1970,,Storm,Tropical cyclone,North Central Coast,1,0,0,0,0,75,995,30,146,89730,139143,1.326.647.996
+5,STORM_PATSY_1970,Patsy,1970,11,Storm,Tropical cyclone,North Central Coast,1,0,0,0,0,75,995,30,146,89730,139143,1.326.647.996
 6,STORM_WANDA_1971,Wanda,1971,5,Storm,Tropical cyclone,South Central Coast,1,0,0,0,0,139,980,23,146,89730,139143,1.383.598.355
 7,STORM_HESTER_1971,Hester,1971,10,Storm,Tropical cyclone,SouthEast,1,0,0,0,0,83,970,100,146,5000,36137.65,1.383.598.355
 8,STORM_NAN_1971,,1971,10,Storm,Tropical cyclone,Red River Delta,0,0,0,0,0,93,985,89,146,89730,139143,1.383.598.355
