@@ -1,7 +1,10 @@
 from pathlib import Path
 
-# date path root
+# data path root
 DATA_HEAD = Path("data")
+
+# weight root
+WEIGHTS_HEAD = Path("weights")
 
 # columns which are just a number, not string or object (float, int)
 NUMERIC_COLS = ['Year', 'Month', 'MainLandfallLocation', 'Flood', 'Slide', 'OFDAResponse', 'Appeal', 'Declaration', 'LandfallMagnitude(kph)','LandfallPressure(mb)', 'TotalDeaths', 'NoInjured','TotalDamage(000US$)', 'TotalDamageAdjusted(000US$)', 'CPI']
