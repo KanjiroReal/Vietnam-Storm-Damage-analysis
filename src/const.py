@@ -17,3 +17,6 @@ LINEAR_TARGETS = ["TotalDeaths", "NoInjured", "TotalDamageAdjusted(000US$)"]
 
 # categorical target
 CATEGORICAL_TARGETS = ['Flood', 'Slide']
+
+# attribute for all target, you don't have to choose all of these as attributes, you can choose some of these base on your decision.
+ATTRIBUTES = ['Year', 'Month', 'MainLandfallLocation', 'OFDAResponse', 'Appeal', 'Declaration', 'LandfallMagnitude(kph)', 'LandfallPressure(mb)']
