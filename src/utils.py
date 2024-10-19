@@ -3,6 +3,8 @@ import math
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix, precision_recall_curve
+
 
 def convert_df_dtype(df ,target_dtype, target_cols):
     """Convert dtype of the selected column of entire pandas dataframe
@@ -100,3 +102,34 @@ def plot_corr(df, cols):
 
     plt.title('Correlation Matrix')
     plt.show()
+
+
+def evaluate(model, X_test, y_test, threshold=0.5):
+    """Evaluates a binary classification model's performance. only using for scikit-learn's model.
+    
+    Args:
+        model (object): The trained classification model with a predict_proba method.
+        X_test (array-like): The input features for testing.
+        y_test (array-like): The true labels for testing.
+        threshold (float): The probability threshold for classification. Default: 0.5
+    
+    Returns:
+        dict: A dictionary containing evaluation metrics:
+              - 'confusion_matrix': The confusion matrix
+              - 'accuracy': The accuracy score (rounded to 2 decimal places)
+              - 'precision': The precision score (rounded to 2 decimal places)
+              - 'recall': The recall score (rounded to 2 decimal places)
+    """
+    y_prob = model.predict_proba(X_test)[:, 1] # probability of class 1
+    y_pred = (y_prob >= threshold).astype(int)
+    cm = confusion_matrix(y_test, y_pred)
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    
+    return {
+        'confusion_matrix': cm,
+        'accuracy': round(accuracy,2),
+        'precision': round(precision,2),
+        'recall': round(recall,2)
+    }
