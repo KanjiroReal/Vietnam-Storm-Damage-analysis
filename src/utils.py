@@ -3,6 +3,7 @@ import math
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.express as px
 from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix, precision_recall_curve
 
 
@@ -133,3 +134,51 @@ def evaluate(model, X_test, y_test, threshold=0.5):
         'precision': round(precision,2),
         'recall': round(recall,2)
     }
+
+def plot_confusion_matrix(cm):
+    """Plots the confusion matrix using Seaborn heatmap.
+    
+    Args:
+        cm (array-like): confusion matrix in array-like
+    Returns:
+        None: This function displays the matrix heatmap but does not return any value.
+    
+    """
+    plt.figure(figsize=(6, 4))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False)
+    plt.xlabel('Predicted')
+    plt.ylabel('Actual')
+    plt.title('Confusion Matrix')
+    plt.show()
+
+
+def plot_3d_scatter(df, columns):
+    """Draw 3d scatter from df and columns inputed, the -1 index of the columns will be the Z in 3D scatter
+
+    Args:
+        df (pd.Dataframe): dataframe use to draw the 3D scatter
+        columns (list[str]): list of columns to be draw the scatter plot. len(columns) should be 3
+
+    Returns:
+        None: This function displays the scatter but does not return any value.
+        
+    Raises:
+        ValueError: ValueError if len(columns) != 3
+    """
+    if len(columns) != 3:
+        raise ValueError("len(columns) are not equal to 3.")
+    
+    x_col, y_col, z_col = columns
+    
+    fig = px.scatter_3d(df, x=x_col, y=y_col, z=z_col,
+                        title=f'Scatter plot for target {z_col}')
+    
+    fig.update_layout(scene = dict(
+                        xaxis_title=x_col,
+                        yaxis_title=y_col,
+                        zaxis_title=z_col),
+                      width=800,
+                      height=800,
+                      margin=dict(r=20, b=10, l=10, t=40))
+    
+    fig.show()
