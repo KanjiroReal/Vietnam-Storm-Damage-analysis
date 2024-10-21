@@ -1,10 +1,12 @@
 import math
+from typing import Literal
 
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
-from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix, precision_recall_curve
+from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix, mean_absolute_error
 
 
 def convert_df_dtype(df ,target_dtype, target_cols):
@@ -105,35 +107,77 @@ def plot_corr(df, cols):
     plt.show()
 
 
-def evaluate(model, X_test, y_test, threshold=0.5):
-    """Evaluates a binary classification model's performance. only using for scikit-learn's model.
-    
-    Args:
-        model (object): The trained classification model with a predict_proba method.
-        X_test (array-like): The input features for testing.
-        y_test (array-like): The true labels for testing.
-        threshold (float): The probability threshold for classification. Default: 0.5
-    
-    Returns:
-        dict: A dictionary containing evaluation metrics:
-              - 'confusion_matrix': The confusion matrix
-              - 'accuracy': The accuracy score (rounded to 2 decimal places)
-              - 'precision': The precision score (rounded to 2 decimal places)
-              - 'recall': The recall score (rounded to 2 decimal places)
+def evaluate(model, X_test, y_test, threshold: float = None, 
+             mode: Literal["classification", "regression"] = "classification") -> dict:
     """
-    y_prob = model.predict_proba(X_test)[:, 1] # probability of class 1
-    y_pred = (y_prob >= threshold).astype(int)
-    cm = confusion_matrix(y_test, y_pred)
-    accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred)
-    recall = recall_score(y_test, y_pred)
-    
-    return {
-        'confusion_matrix': cm,
-        'accuracy': round(accuracy,2),
-        'precision': round(precision,2),
-        'recall': round(recall,2)
-    }
+    Evaluates the performance of a scikit-learn model (binary classification or regression).
+
+    Args:
+        model (object): The trained model (with a predict_proba method for classification).
+        X_test (array-like): The input features for testing.
+        y_test (array-like): The true labels or values for testing.
+        threshold (float): For classification, the probability threshold. Default is 0.5.
+                           For regression, the allowed error threshold. Default is 0.2 (20%).
+        mode (Literal["classification", "regression"]): The evaluation mode. 
+            - "classification": Confusion matrix, accuracy, precision, recall.
+            - "regression": MAE, MSE, RMSE with optional tolerance check.
+
+    Returns:
+        dict: A dictionary with relevant evaluation metrics.
+
+    Raises:
+        ValueError: If the mode is invalid or threshold is not in the valid range.
+    """
+    if threshold is None:
+        threshold = 0.5 if mode == "classification" else 0.2
+
+    if not (0 <= threshold <= 1):
+        raise ValueError("Threshold must be between 0 and 1.")
+
+    if mode == "classification":
+        y_prob = model.predict_proba(X_test)[:, 1]  # Probability of class 1
+        y_pred = (y_prob >= threshold).astype(int)
+
+        cm = confusion_matrix(y_test, y_pred)
+        accuracy = accuracy_score(y_test, y_pred)
+        precision = precision_score(y_test, y_pred, zero_division=0)
+        recall = recall_score(y_test, y_pred, zero_division=0)
+
+        return {
+            'confusion_matrix': cm,
+            'accuracy': round(accuracy, 2),
+            'precision': round(precision, 2),
+            'recall': round(recall, 2)
+        }
+
+    elif mode == "regression":
+        y_pred = model.predict(X_test)
+
+        mae = mean_absolute_error(y_test, y_pred)
+        mse = np.mean((y_test - y_pred) ** 2)  
+        rmse = np.sqrt(mse) 
+
+        # Optional: Check if errors are within the tolerance threshold
+        tolerance_mae = threshold * np.mean(np.abs(y_test))
+        tolerance_rmse = threshold * np.std(y_test)
+        tolerance_mse = threshold * np.var(y_test)
+
+        within_tolerance = {
+            'mae_upperbound_tolerance': round(tolerance_mae - mae, 2),
+            'rmse_upperbound_tolerance': round(tolerance_rmse - rmse, 2),
+            'mse_tolerance_tolerance': round(tolerance_mse - mse, 2)
+        }
+
+        return {
+            'mae': round(mae, 2),
+            'mse': round(mse, 2),
+            'rmse': round(rmse, 2),
+            **within_tolerance
+        }
+
+    else:
+        raise ValueError("Invalid mode. Mode must be 'classification' or 'regression'.")
+
 
 def plot_confusion_matrix(cm):
     """Plots the confusion matrix using Seaborn heatmap.
