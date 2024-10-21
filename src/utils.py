@@ -165,7 +165,7 @@ def evaluate(model, X_test, y_test, threshold: float = None,
         within_tolerance = {
             'mae_upperbound_tolerance': round(tolerance_mae - mae, 2),
             'rmse_upperbound_tolerance': round(tolerance_rmse - rmse, 2),
-            'mse_tolerance_tolerance': round(tolerance_mse - mse, 2)
+            'mse_upperbound_tolerance': round(tolerance_mse - mse, 2)
         }
 
         return {
