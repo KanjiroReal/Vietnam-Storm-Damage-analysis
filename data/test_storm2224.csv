@@ -1,0 +1,9 @@
+ID,EventName,Year,Month,DisasterType,DisasterSubtype,MainLandfallLocation,Flood,Slide,OFDAResponse,Appeal,Declaration,LandfallMagnitude(kph),LandfallPressure(mb),TotalDeaths,NoInjured,TotalDamage(000US$)
+STORM_MA-ON_2022,Ma-on,2022,8,Storm,Storm (General),1,1,0,0,0,0,75,998,3,20,6000
+STORM_MULAN_2022,Mulan,2022,8,Storm,Tropical cyclone,3,1,1,0,0,0,65,996,4,20,229790
+STORM_NORU(KARDING)_2022,Noru(Karding),2022,9,Storm,Storm surge,5,1,0,0,0,0,176,949,9,62,108300
+STORM_SONCA_2022,Sonca,2022,10,Storm,Tropical cyclone,5,1,1,0,0,0,55,1000,19,110,65000
+STORM_PRAPIROON_2024,Prapiroon,2024,7,Storm,Tropical cyclone,3,1,1,0,0,0,110,985,16,20,17400
+STORM_YAGI_2024,Yagi,2024,9,Storm,Tropical cyclone,1,1,1,1,1,1,213,942,344,1976,3300000
+STORM_SOULIK_2024,Soulik,2024,9,Storm,Tropical cyclone,5,1,1,0,0,0,55,993,3,1,19400
+STORM_TRAMI_2024,Trami,2024,10,Storm,Tropical cyclone,5,1,1,0,0,0,56,998,8,14,20000

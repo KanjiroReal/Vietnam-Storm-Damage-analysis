@@ -151,7 +151,17 @@ def evaluate(model, X_test, y_test, threshold: float = None,
         }
 
     elif mode == "regression":
-        y_pred = model.predict(X_test)
+        try:
+            y_pred = model.predict(X_test)
+            # Nếu là TabNetRegressor, output sẽ có shape (n, n)
+            if len(y_pred.shape) > 1:
+                y_pred = y_pred[:, 0]  # Lấy cột đầu tiên
+        except:
+            y_pred = model.predict(X_test).flatten()
+
+        # Chuyển y_test về numpy array nếu là pandas Series
+        if isinstance(y_test, pd.Series):
+            y_test = y_test.values
 
         mae = mean_absolute_error(y_test, y_pred)
         mse = np.mean((y_test - y_pred) ** 2)  
